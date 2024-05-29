@@ -1,0 +1,8 @@
+{
+	"files.associations": {
+		"bitset": "c",
+		"variant": "c",
+		"chrono": "c",
+		"push_swap.h": "c"
+	}
+}
