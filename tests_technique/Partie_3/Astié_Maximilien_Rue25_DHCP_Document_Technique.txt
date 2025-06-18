@@ -1,0 +1,145 @@
+Configuration Windows Server 2019 GUI
+
+||||||||||||||||||||||||||||||||||||DHCP||||||||||||||||||||||||||||||||||||
+
+1 Lancez le Gestionnaire de serveur
+
+Cliquez sur Gérer -> Ajoutez des rôles ou fonctionnalités
+
+Avant de commencer -> Suivant
+Type d'installation -> Installation basée sur un rôle ou une fonctionnalité -> Suivant
+Sélection du serveur -> Sélectionner le serveur du pool de serveurs
+	-> VMname:Rue25(Nom:Rue25 Adresse IP:10.0.2.15 System:MWS2019STDEvaluation) -> Suivant
+Rôles de serveurs -> Cochez la case Serveur DHCP
+	-> Détection de problème mon serveur n est pas sur une IP static.
+	-> Cliquez sur Réseau et Internet > Centre Réseau et partage >Modifier les paramètres de la carte.
+		Cliquez avec le bouton droit de la souris sur l'adaptateur réseau et cliquez sur Propriétés.
+			Double-cliquez sur Protocole Internet Version 4 (TCP / IPv4). Activez l'option Utiliser l'adresse IP suivante.
+	-> 192.168.1.1 255.255.255.0 -> Ok
+	-> Reprendre les étapes
+	-> VMname:Rue25(Nom:Rue25 Adresse IP:192.168.1.1 System:MWS2019STDEvaluation) -> Suivant
+Fonctionnalités -> Suivant
+Serveur DHCP -> Suivant
+Confirmation -> Installer
+Résultats -> Configuration requise. Installation réussie sur Rue25. -> Fermer.
+
+Une notification apparait pour terminez la configuration DHCP -> Cliquez
+
+Description -> Valider
+Résumé -> Fermer.
+
+||||||||||||||||||||||||||||||||||||AD DS||||||||||||||||||||||||||||||||||||
+
+Cliquez sur Gérer -> Ajoutez des rôles ou fonctionnalités
+
+Avant de commencer -> Suivant
+Type d'installation -> Installation basée sur un rôle ou une fonctionnalité -> Suivant
+Sélection du serveur -> Sélectionner le serveur du pool de serveurs
+	-> VMname:Rue25(Nom:Rue25 Adresse IP:192.168.1.1 System:MWS2019STDEvaluation) -> Suivant
+Fonctionnalités -> Suivant
+AD DS -> Suivant
+Confirmation -> Installer
+Résultats -> Configuration requise. Installation réussie sur Rue25. -> Fermer
+
+Une notification apparait pour promouvoir ce serveur en contrôleur de domaine -> Cliquez
+
+Configuration de déploiement -> Ajoutez une nouvelle forêt
+	-> Nom de domaine racine: rue25.com -> Suivant
+Options du contrôleur de domaine
+	-> WS2016
+	-> WS2016
+	Cochez Serveur DNS
+	Cochez Catalogue global
+	mot de passe de restauration des services d'annuaire (DSRM) -> Password1 (simple mdp pour la Regex sachant que ce n'est pas de bonne usage)  -> Suivant
+	Options DNS -> Suivant
+Options supplémentaires
+	Le nom de domaine NetBIOS : RUE250 (valeur alternative suggérée)
+Chemins d'accès
+	Dossier de la base de donnés: C:\Windows\NTDS
+	Dossier des fichiers journaux: C:\Windows\NTDS
+	Dossier SYSVOL: C:\Windows\SYSVOL
+
+Examiner les options:
+	Configurez ce serveur en tant que premier contrôleur de domaine Active Directory d'une nouvelle forêt.
+	Le nouveau nom de domaine est << rue25.com >> c'est aussi le nom de la nouvelle forêt
+	Nom NetBIOS du domaine: RUE250
+	Niveau fonctionnel de la forêt: Windows Server 2016
+	Niveau fonctionnel ddu domaine: Windows Server 2016
+
+	Options supplémentaires:
+		Catalogue global: Oui
+		Serveur DNS: Oui
+		Création de délégation DNS: Non
+		Dossier de la base de donnés: C:\Windows\NTDS
+		Dossier des fichiers journaux: C:\Windows\NTDS
+		Dossier SYSVOL: C:\Windows\SYSVOL
+	Le service Serveur DNS sera configuré sur cet ordinateur
+	Cet ordinateur sera configuré pour utiliser ce serveur DNS en tant que serveur DNS préferé.
+	Le mot de passe du nouvel administrateur de domaine sera le même que celui de l'administrateur local de cet odrinateur
+	-> Suivant
+Vérification de la confiuration requise
+	Toutes les vérifications de la configuration requise ont donnée satisfaction. -> Installer
+
+Installation Ce serveur a été correctement installer (pas eut le temps de lire la fin du message).
+
+Résultat -> Redémarrage.
+
+||||||||||||||||||||||||||||||||||||Créer les utilisateurs ansi que les UOs et les groupes de sécurité.||||||||||||||||||||||||||||||||||||
+
+************************************UTILISATEURS************************************
+
+Lancez -> Utilisateurs et ordinateurs Active Directory
+Users -> menu contextuel sélectionnez Noueau - Utilisateur.
+Cochez la case l'utilisateur doit changer le mot de passe à la prochaine ouverture de session
+
+************************************UOs************************************
+Outils d'administration
+Centre d'administration Active Directory
+volet rue25(local) -> Nouveau -> Unité d'organisation
+
+Je n'ai pas trop compris ce que je devais faire, remplir Nom/adresse/Description et définir gérer par type d'objet.
+Donc je me suis inspiré de la partie optionnel
+
+Création UO Direction -> gérer par Sylvie SB. Bien
+Création UO Consultant -> Alain AF. Firmerie
+Création UO Commerciaux -> Jonathan AL. Longtemps
+Création UO Comptables -> Vincent VT. Tyme
+
+************************************Groupes de sécurité************************************
+
+Idem que pour les UOs
+
+Utilisateur et ordinateurs Active Directory
+
+Users -> Nouveau
+
+Nom du groupe Directions | Etendue du groupe -> Global | Type de groupe -> Sécurité
+Sylvie | Lisa
+Nom du groupe Consultants | Etendue du groupe -> Domaine local | Type de groupe -> Sécurité
+Alain | Mehdi
+Nom du groupe Commerciaux | Etendue du groupe -> Domaine local | Type de groupe -> Sécurité
+Jonathan | Samira | Paul
+nom du groupe Comptables | Etendue du groupe -> Domaine local | Type de groupe -> Sécurité
+Vincent | Cyrene
+
+
+||||||||||||||||||||||||||||||||||||Dossier partagé par service, autorisation d'accès application aux groupes de sécurité de l'AD||||||||||||||||||||||||||||||||||||
+
+Création des 4 dossiers
+
+
+Direction ->  Propriété		-> Partage -> Partage Avancés -> Partager
+				-> Partager -> Ajoutez -> Rechercher des personnes -> R/W Groupe Directions.
+\\RUE25\\Direction
+
+Consultants -> Propriété	-> Partage -> Partage Avancés -> Partager
+				-> Partager -> Ajoutez -> Rechercher des personnes -> R/W Groupe Consultants + R Sylvie.
+\\RUE25\\Consultants
+
+Commerciaux -> Propriété	-> Partage -> Partage Avancés -> Partager
+				-> Partager -> Ajoutez -> Rechercher des personnes -> R/W Groupe Commerciaux + R Sylvie + R Gr Comptables.
+\\RUE25\\Commerciaux
+
+Comptables -> Propriété		-> Partage -> Partage Avancés -> Partager
+				-> Partager -> Ajoutez -> Rechercher des personnes -> R/W Groupe Comptables + R Sylvie.
+\\RUE25\\Comptables

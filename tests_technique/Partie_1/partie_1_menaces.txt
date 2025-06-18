@@ -1,0 +1,10 @@
+Les adresses IP LAN sont distinctes des adresses IP publiques sur Internet. Si vous recherchez votre adresse IP publique en ligne, vous obtiendrez quatre séries de nombres aléatoires. Les adresses LAN sont isolées d'Internet, et de nombreux LAN comptent donc de nombreux appareils appartenant à la plage IP 192.168.
+
+On trouvera énormément de vulnérabilités intrinsèques dans le réseau LAN pour une raison simple : les administrateurs partent du principe de confiance. Tout accès au LAN est cédé aux utilisateurs par un contrat de confiance dont la limite est l’abus de la crédulité des solutions mises en place dans l’infrastructure.
+
+Les vulnérabilités des réseaux locaux peuvent se manifester de diverses manières, notamment par des protocoles de mots de passe faibles, des logiciels obsolètes ou du matériel non corrigé
+
+Une autre cause de vulnérabilité des réseaux locaux (LAN) est l'absence de segmentation et de contrôles d'accès. Sans segmentation adéquate, un attaquant accédant à une partie du LAN peut rapidement se déplacer latéralement et compromettre d'autres systèmes. La mise en œuvre de contrôles d'accès, tels que des pare-feu et des réseaux locaux virtuels (VLAN), permet de limiter l'impact d'une attaque et d'empêcher tout accès non autorisé.
+
+
+
